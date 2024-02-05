@@ -5,6 +5,7 @@ def show_signup_page():
     signup_window = tk.Toplevel(root)
     signup_window.title("Journalify")
     signup_window.geometry('800x400')
+    signup_window.configure(bg = "#219299")
     
     tk.Label(signup_window, text="Sign Up").pack()
 
@@ -46,8 +47,10 @@ def login():
         messagebox.showerror("Login Error", "Invalid! Please give username and password")
 
 root = tk.Tk()
-root.title("Login Page")
+root.title("Journalify")
 root.geometry('800x400')
+root.geometry("1000x692")
+root.configure(bg = "#219299")
 
 tk.Label(root, text="Username:").pack()
 username_entry = tk.Entry(root)
