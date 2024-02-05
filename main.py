@@ -4,6 +4,7 @@ from tkinter import messagebox
 def show_signup_page():
     signup_window = tk.Toplevel(root)
     signup_window.title("Journalify")
+    signup_window.geometry('800x400')
     
     tk.Label(signup_window, text="Sign Up").pack()
 
@@ -46,6 +47,7 @@ def login():
 
 root = tk.Tk()
 root.title("Login Page")
+root.geometry('800x400')
 
 tk.Label(root, text="Username:").pack()
 username_entry = tk.Entry(root)
