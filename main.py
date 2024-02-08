@@ -28,7 +28,7 @@ def show_signup_page():
         new_password = signup_password_entry.get()
         confirm_password = confirm_password_entry.get()
 
-        if new_password == confirm_password:
+        if new_password == confirm_password :
             messagebox.showinfo("Signup", f"Signup successful for {new_username}!")
             signup_window.destroy()
         else:
@@ -40,6 +40,7 @@ def show_signup_page():
 def login():
     username = username_entry.get()
     password = password_entry.get()
+    newpass = newpass_ent.get()
 
     if username and password:
         messagebox.showinfo("Login", "Login Complete!")
@@ -48,7 +49,6 @@ def login():
 
 root = tk.Tk()
 root.title("Journalify")
-root.geometry('800x400')
 root.geometry("1000x692")
 root.configure(bg = "#219299")
 
