@@ -34,16 +34,22 @@ def create_file():
 
     file_path = f"{username}.txt"
     write_window = tk.Toplevel(root)
-    write_window.title(f"{username}'s Journal.txt")
+    write_window.title(f"{username}'s Journal")
 
     def save_content():
        
-       print("after clicking save button it will write it to username.txt")
+        content = text_area.get("1.0", tk.END)
+        mode = "w" if not os.path.exists(file_path) else "a"
+        with open(file_path, mode) as file:
+            if mode == "a":
+                file.write("\n")  
+            file.write(content)
+        messagebox.showinfo("Success", f"{username}'s Journal updated.")
 
     text_area = tk.Text(write_window)
     text_area.pack(fill="both", expand=True)
 
-    save_button = tk.Button(write_window, text="Save", command=save_content)
+    save_button = tk.Button(write_window, text="Update Journal", command=save_content)
     save_button.pack()
 
 def read_file():
