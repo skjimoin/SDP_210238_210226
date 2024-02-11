@@ -1,17 +1,38 @@
 import tkinter as tk
-
+from tkinter import messagebox
+from tkinter import simpledialog
+import os
 
 def save_password(username, password):
-    print("will save new password and a new text file containing pass")
+    with open(f"{username}pass.txt", "w") as pass_file:
+        pass_file.write(password)
 
 def create_file():
     username = username_entry.get()
-    print("if passfile available then check if it matches or not otherwise use save pass func to create a password containg text file")
-    #save_password(username, password)
+   
+    if not username:
+        messagebox.showerror("Error", "Please enter a username")
+        return
 
-    print("then in username.txt file we will have permission to write the journal")
+    if os.path.exists(f"{username}pass.txt"):
+        with open(f"{username}pass.txt", "r") as pass_file:
+            password = pass_file.read().strip()
+    else:
+        password = simpledialog.askstring("Password", f"Set password for {username}:")
 
+        if not password:
+            messagebox.showerror("Error", "Password cannot be empty")
+            return
 
+        save_password(username, password)
+
+    password_entry = simpledialog.askstring("Password", f"Enter password for {username}:")
+
+    if password_entry != password:
+        messagebox.showerror("Error", "Incorrect password")
+        return
+
+    file_path = f"{username}.txt"
     write_window = tk.Toplevel(root)
     write_window.title(f"{username}'s Journal.txt")
 
