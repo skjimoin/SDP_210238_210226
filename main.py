@@ -1,6 +1,7 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox,ttk
 from tkinter import simpledialog
+from datetime import datetime
 import os
 
 def save_password(username, password):
@@ -55,11 +56,56 @@ def create_file():
 def read_file():
     username = username_entry.get()
 
-    print("will read and organize the journal")
+    if not username:
+        messagebox.showerror("Error", "Please enter a username")
+        return
+
+    if os.path.exists(f"{username}pass.txt"):
+        with open(f"{username}pass.txt", "r") as pass_file:
+            password = pass_file.read().strip()
+    else:
+        messagebox.showerror("Error", f"Journal for '{username}' hasn't been created")
+        return
+
+    password_entry = simpledialog.askstring("Password", f"Enter password for {username}:")
+
+    if password_entry != password:
+        messagebox.showerror("Error", "Incorrect password")
+        return
+
+    file_path = f"{username}.txt"
+
+    if not os.path.exists(file_path):
+        messagebox.showerror("Error", f"Journal for '{username}' hasn't been created")
+        return
+
+    read_window = tk.Toplevel(root)
+    read_window.title(f"{username}'s Journal")
+
+    canvas = tk.Canvas(read_window)
+    scrollbar = ttk.Scrollbar(read_window, orient="vertical", command=canvas.yview)
+    frame = ttk.Frame(canvas)
+
+    scrollbar.pack(side="right", fill="y")
+    canvas.pack(side="left", fill="both", expand=True)
+    canvas.create_window((0, 0), window=frame, anchor="nw")
 
 
+    frame.bind("<Configure>", lambda event, canvas=canvas: canvas.configure(scrollregion=canvas.bbox("all")))
 
+    line_number = 1
 
+    with open(file_path, "r") as file:
+        for line in file:
+            if line.strip():
+                timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                labeled_line = f"{line_number}: ({username})    Date: {timestamp.split()[0]} | Time: {timestamp.split()[1]} \n    >> {line.strip()}"
+
+                message_frame = ttk.Frame(frame, borderwidth=1, relief="solid")
+                label = ttk.Label(message_frame, text=labeled_line, wraplength=600, justify="left")
+                label.pack(anchor="w", padx=10, pady=5)
+                message_frame.pack(fill="x", padx=5, pady=5)
+                line_number += 1
 
 
 root = tk.Tk()
