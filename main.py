@@ -111,18 +111,22 @@ def read_file():
 root = tk.Tk()
 root.title("Journalify")
 root.geometry("1200x700")
+root.configure(bg="sky blue")
 
+frame1 = tk.Frame(bg='sky blue')
 
-username_label = tk.Label(root, text="Username:")
-username_label.grid(row=0, column=0, padx=10, pady=5, sticky="w")
-username_entry = tk.Entry(root)
+username_label = tk.Label(frame1, text="Username:", bg='sky blue', fg='#333333', font=("Arial", 16))
+username_label.grid(row=0, column=0, padx=20, pady=10, sticky="news")
+username_entry = tk.Entry(frame1, font=("Arial", 16))
 username_entry.grid(row=0, column=1, padx=10, pady=5, sticky="ew")
 
-create_button = tk.Button(root, text="Write your thoughts...", command=create_file)
+create_button = tk.Button(frame1, text="Write your thoughts...", bg='#00008B', fg='white', font=("Arial", 15), command=create_file)
 create_button.grid(row=1, column=0, columnspan=2, pady=5)
 
-read_button = tk.Button(root, text="Your Journal", command=read_file)
+read_button = tk.Button(frame1, text="Your Journal", bg='#00008B', fg='white', font=("Arial", 15), command=read_file)
 read_button.grid(row=2, column=0, columnspan=2, pady=5)
+
+frame1.pack()
 
 root.mainloop()
 
