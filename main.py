@@ -1,14 +1,12 @@
 import tkinter as tk
-from tkinter import messagebox, ttk
+from tkinter import messagebox,ttk
 from tkinter import simpledialog
 from datetime import datetime
 import os
-import csv
 
 def save_password(username, password):
-    with open("user_credentials.csv", "a", newline='') as pass_file:
-        writer = csv.writer(pass_file)
-        writer.writerow([username, password])
+    with open(f"{username}pass.txt", "w") as pass_file:
+        pass_file.write(password)
 
 def create_file():
     username = username_entry.get()
@@ -17,13 +15,9 @@ def create_file():
         messagebox.showerror("Error", "Please enter a username")
         return
 
-    if os.path.exists("user_credentials.csv"):
-        with open("user_credentials.csv", "r") as pass_file:
-            csv_reader = csv.reader(pass_file)
-            for row in csv_reader:
-                if row[0] == username:
-                    password = row[1]
-                    break
+    if os.path.exists(f"{username}pass.txt"):
+        with open(f"{username}pass.txt", "r") as pass_file:
+            password = pass_file.read().strip()
     else:
         password = simpledialog.askstring("Password", f"Set password for {username}:")
 
@@ -44,6 +38,7 @@ def create_file():
     write_window.title(f"{username}'s Journal")
 
     def save_content():
+       
         content = text_area.get("1.0", tk.END)
         mode = "w" if not os.path.exists(file_path) else "a"
         with open(file_path, mode) as file:
@@ -65,13 +60,9 @@ def read_file():
         messagebox.showerror("Error", "Please enter a username")
         return
 
-    if os.path.exists("user_credentials.csv"):
-        with open("user_credentials.csv", "r") as pass_file:
-            csv_reader = csv.reader(pass_file)
-            for row in csv_reader:
-                if row[0] == username:
-                    password = row[1]
-                    break
+    if os.path.exists(f"{username}pass.txt"):
+        with open(f"{username}pass.txt", "r") as pass_file:
+            password = pass_file.read().strip()
     else:
         messagebox.showerror("Error", f"Journal for '{username}' hasn't been created")
         return
@@ -87,30 +78,6 @@ def read_file():
     if not os.path.exists(file_path):
         messagebox.showerror("Error", f"Journal for '{username}' hasn't been created")
         return
-    
-    def edit_file():
-        edit_window = tk.Toplevel(root)
-        edit_window.title(f"Edit {username}'s Journal")
-
-        with open(file_path, "r") as file:
-            content = file.read()
-
-        edit_text_area = tk.Text(edit_window)
-        edit_text_area.insert(tk.END, content)
-        edit_text_area.pack(fill="both", expand=True)
-
-        def save_changes():
-            edited_content = edit_text_area.get("1.0", tk.END)
-            with open(file_path, "w") as file:
-                file.write(edited_content)
-            messagebox.showinfo("Success", f"{username}'s Journal updated.")
-            edit_window.destroy()
-
-        save_button = tk.Button(edit_window, text="Save Changes", command=save_changes)
-        save_button.pack()
-
-    
-        read_file()  # Refresh the window after deleting the entry
 
     read_window = tk.Toplevel(root)
     read_window.title(f"{username}'s Journal")
@@ -122,6 +89,7 @@ def read_file():
     scrollbar.pack(side="right", fill="y")
     canvas.pack(side="left", fill="both", expand=True)
     canvas.create_window((0, 0), window=frame, anchor="nw")
+
 
     frame.bind("<Configure>", lambda event, canvas=canvas: canvas.configure(scrollregion=canvas.bbox("all")))
 
@@ -135,14 +103,10 @@ def read_file():
 
                 message_frame = ttk.Frame(frame, borderwidth=1, relief="solid")
                 label = ttk.Label(message_frame, text=labeled_line, wraplength=600, justify="left")
-                label.pack(side="left", fill="both", padx=10, pady=5)
-                delete_button = tk.Button(message_frame, text="Delete", command=lambda num=line_number: delete_entry(num))
-                delete_button.pack(side="right", padx=5, pady=5)
+                label.pack(anchor="w", padx=10, pady=5)
                 message_frame.pack(fill="x", padx=5, pady=5)
                 line_number += 1
 
-    edit_button = tk.Button(frame, text="Edit", command=edit_file)
-    edit_button.pack()
 
 root = tk.Tk()
 root.title("Journalify")
@@ -165,3 +129,4 @@ read_button.grid(row=2, column=0, columnspan=2, pady=5)
 frame1.pack()
 
 root.mainloop()
+
