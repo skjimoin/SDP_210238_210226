@@ -90,7 +90,17 @@ def read_file():
 
     def delete_entry(entry_num):
         
-        print("delete functionality")
+        read_window.destroy()
+        def confirm_delete():
+            with open(file_path, "r") as file:
+                lines = file.readlines()
+            del lines[entry_num]
+            with open(file_path, "w") as file:
+                file.writelines(lines)
+            messagebox.showinfo("Success", "Entry deleted successfully")
+            delete_window.destroy()
+            read_file()
+
         delete_window = tk.Toplevel(root)
         delete_window.title("Delete Entry")
 
