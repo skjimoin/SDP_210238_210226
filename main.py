@@ -80,16 +80,34 @@ def read_file():
         return
 
     def edit_entry(entry_num):
-        print("edit functionality")
+        read_window.destroy()
+        def save_edit():
+            
+            edited_content = entry_content.get("1.0", tk.END)
+            with open(file_path, "r") as file:
+                lines = file.readlines()
+            lines[entry_num] = edited_content
+            with open(file_path, "w") as file:
+                file.writelines(lines)
+            messagebox.showinfo("Success", "Entry edited successfully")
+            edit_window.destroy()
+            read_file()
+
         edit_window = tk.Toplevel(root)
         edit_window.title("Edit Entry")
 
-        
+        with open(file_path, "r") as file:
+            lines = file.readlines()
+        original_content = lines[entry_num]
+
+        entry_content = tk.Text(edit_window)
+        entry_content.insert(tk.END, original_content)
+        entry_content.pack(fill="both", expand=True)
+
         save_button = tk.Button(edit_window, text="Save Changes", command=save_edit)
         save_button.pack()
 
     def delete_entry(entry_num):
-        
         read_window.destroy()
         def confirm_delete():
             with open(file_path, "r") as file:
