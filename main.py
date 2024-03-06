@@ -8,7 +8,9 @@ def save_password(username, password):
     with open(f"{username}pass.txt", "w") as pass_file:
         pass_file.write(password)
 
-def create_file():
+
+def checkinfo() :
+    print("to check username and pass")
     username = username_entry.get()
    
     if not username:
@@ -32,7 +34,13 @@ def create_file():
     if password_entry != password:
         messagebox.showerror("Error", "Incorrect password")
         return
+    else :
+        nexwin()
 
+def create_file():
+    username = username_entry.get()
+   
+   
     file_path = f"{username}.txt"
     write_window = tk.Toplevel(root)
     write_window.title(f"{username}'s Journal")
@@ -56,23 +64,7 @@ def create_file():
 def read_file():
     username = username_entry.get()
 
-    if not username:
-        messagebox.showerror("Error", "Please enter a username")
-        return
-
-    if os.path.exists(f"{username}pass.txt"):
-        with open(f"{username}pass.txt", "r") as pass_file:
-            password = pass_file.read().strip()
-    else:
-        messagebox.showerror("Error", f"Journal for '{username}' hasn't been created")
-        return
-
-    password_entry = simpledialog.askstring("Password", f"Enter password for {username}:")
-
-    if password_entry != password:
-        messagebox.showerror("Error", "Incorrect password")
-        return
-
+   
     file_path = f"{username}.txt"
 
     if not os.path.exists(file_path):
@@ -179,17 +171,31 @@ root.geometry("1200x700")
 root.configure(bg="sky blue")
 
 frame1 = tk.Frame(bg='sky blue')
+def nexwin() :
+    username = username_entry.get()
+    new_window = tk.Toplevel(root)
+    new_window.title(f"Journalify : USER({username})")
+    new_window.geometry("1200x700")
+    new_window.configure(bg="sky blue")
+
+    frame2 = tk.Frame(new_window,bg='sky blue')
+    u_label = tk.Label(frame1, text="Username:", bg='sky blue', fg='#333333', font=("Arial", 16))
+    u_label.grid(row=0, column=0, padx=20, pady=10, sticky="news")
+    create_button = tk.Button(frame2, text="Write your thoughts...", bg='#00008B', fg='white', font=("Arial", 15), command=create_file)
+    create_button.grid(row=1, column=0, columnspan=2, pady=5)
+    read_button = tk.Button(frame2, text="Your Journal", bg='#00008B', fg= 'white', font=("Arial", 15), command=read_file)
+    read_button.grid(row=2, column=0, columnspan=2, pady=5)
+    frame2.pack()
+
+
 
 username_label = tk.Label(frame1, text="Username:", bg='sky blue', fg='#333333', font=("Arial", 16))
 username_label.grid(row=0, column=0, padx=20, pady=10, sticky="news")
 username_entry = tk.Entry(frame1, font=("Arial", 16))
 username_entry.grid(row=0, column=1, padx=10, pady=5, sticky="ew")
+check_info = tk.Button(frame1, text="...Go...", bg='#00008B', fg='white', font=("Arial", 15), command=checkinfo)
+check_info.grid(row=1, column=0, columnspan=2, pady=5)
 
-create_button = tk.Button(frame1, text="Write your thoughts...", bg='#00008B', fg='white', font=("Arial", 15), command=create_file)
-create_button.grid(row=1, column=0, columnspan=2, pady=5)
-
-read_button = tk.Button(frame1, text="Your Journal", bg='#00008B', fg= 'white', font=("Arial", 15), command=read_file)
-read_button.grid(row=2, column=0, columnspan=2, pady=5)
 
 frame1.pack()
 
