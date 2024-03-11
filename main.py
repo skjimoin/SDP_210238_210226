@@ -63,8 +63,6 @@ def create_file():
 
 def read_file():
     username = username_entry.get()
-
-   
     file_path = f"{username}.txt"
 
     if not os.path.exists(file_path):
@@ -74,7 +72,6 @@ def read_file():
     def edit_entry(entry_num):
         read_window.destroy()
         def save_edit():
-            
             edited_content = entry_content.get("1.0", tk.END)
             with open(file_path, "r") as file:
                 lines = file.readlines()
@@ -120,8 +117,74 @@ def read_file():
         confirm_button = tk.Button(delete_window, text="Yes", command=confirm_delete)
         confirm_button.pack()
 
+
+    
+
+    def filter_entries():
+      
+        print("filter option")
+
+
+    def search_entries():
+        keyword = search_entry.get().strip().lower()
+
+        if not keyword:
+            messagebox.showerror("Error", "Please enter a search keyword")
+            return
+
+        for widget in frame.winfo_children():
+            widget.destroy()
+
+        with open(file_path, "r") as file:
+            entries = file.readlines()
+
+        for i, entry in enumerate(entries):
+            if entry.strip().lower().find(keyword) != -1:
+                random_number = random.randint(1, 20)
+                emojis = [
+                    "😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣", "🥲", "🥹",
+                    "☺️", "😊", "😇", "🙂", "🙃", "😉", "😌", "😍", "🥰", "😘",
+                    "😗", "😙", "😚", "😋", "😛", "😝", "😜", "🤪", "🤨", "🧐",
+                    "🤓", "😎", "🥸", "🤩", "🥳", "😏", "😒", "😞", "😔", "😟",
+                    "😕", "🙁"
+                ]
+                timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                labeled_line = f"{emojis[random_number]} ({username})    Date: {timestamp.split()[0]} | Time: {timestamp.split()[1]} \n    >> {entry.strip()}"
+
+                message_frame = ttk.Frame(frame, borderwidth=1, relief="solid")
+                label = ttk.Label(message_frame, text=labeled_line, wraplength=600, justify="left")
+                label.pack(anchor="w", padx=10, pady=5)
+                message_frame.pack(fill="x", padx=5, pady=5)
+
+                edit_button = tk.Button(message_frame, text="Edit", command=lambda num=i: edit_entry(num))
+                edit_button.pack(side="left", padx=5)
+
+                delete_button = tk.Button(message_frame, text="Delete", command=lambda num=i: delete_entry(num))
+                delete_button.pack(side="right", padx=5)
+
     read_window = tk.Toplevel(root)
     read_window.title(f"{username}'s Journal")
+
+    search_frame = ttk.Frame(read_window)
+    search_frame.pack(fill="x", padx=5, pady=5)
+
+    search_entry = tk.Entry(search_frame)
+    search_entry.pack(side="left", padx=5)
+
+    search_button = tk.Button(search_frame, text="Search", command=search_entries)
+    search_button.pack(side="left", padx=5)
+
+    filter_options = [
+            "Ascending Order",
+            "Descending Order"
+        ]
+
+    filter_combobox = ttk.Combobox(search_frame, values=filter_options, state="Date Ascending")
+    filter_combobox.pack(side="left", padx=5)
+
+
+    filter_button = tk.Button(search_frame, text="Filter", command=filter_entries)
+    filter_button.pack(side="left", padx=5)
 
     canvas = tk.Canvas(read_window)
     scrollbar = ttk.Scrollbar(read_window, orient="vertical", command=canvas.yview)
@@ -138,8 +201,6 @@ def read_file():
 
     for i, entry in enumerate(entries):
         if entry.strip():
-
-
             random_number = random.randint(1, 20)
             emojis = [
                 "😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣", "🥲", "🥹",
@@ -148,9 +209,6 @@ def read_file():
                 "🤓", "😎", "🥸", "🤩", "🥳", "😏", "😒", "😞", "😔", "😟",
                 "😕", "🙁"
             ]
-
-
-            entry_num = i + 1
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             labeled_line = f"{emojis[random_number]} ({username})    Date: {timestamp.split()[0]} | Time: {timestamp.split()[1]} \n    >> {entry.strip()}"
 
@@ -159,11 +217,13 @@ def read_file():
             label.pack(anchor="w", padx=10, pady=5)
             message_frame.pack(fill="x", padx=5, pady=5)
 
-            edit_button = tk.Button(message_frame, text="Edit", command=lambda num=entry_num-1: edit_entry(num))
+            edit_button = tk.Button(message_frame, text="Edit", command=lambda num=i: edit_entry(num))
             edit_button.pack(side="left", padx=5)
 
-            delete_button = tk.Button(message_frame, text="Delete", command=lambda num=entry_num-1: delete_entry(num))
+            delete_button = tk.Button(message_frame, text="Delete", command=lambda num=i: delete_entry(num))
             delete_button.pack(side="right", padx=5)
+    
+
 
 root = tk.Tk()
 root.title("Journalify")
