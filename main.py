@@ -122,7 +122,51 @@ def read_file():
 
     def filter_entries():
       
-        print("filter option")
+        selected_filter = filter_combobox.get()
+
+        if selected_filter == "Ascending Order":
+            sort_key = lambda entry: entry["text"]
+            reverse = False
+        elif selected_filter == "Descending Order":
+            sort_key = lambda entry: entry["text"]
+            reverse = True
+        else:
+            messagebox.showerror("Error", "Please select a valid filter option")
+            return
+
+        for widget in frame.winfo_children():
+            widget.destroy()
+
+        with open(file_path, "r") as file:
+            entries = file.readlines()
+
+        if reverse:
+            entries.reverse()
+
+        for i, entry in enumerate(entries):
+            if entry.strip():
+                random_number = random.randint(1, 20)
+                emojis = [
+                    "😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣", "🥲", "🥹",
+                    "☺️", "😊", "😇", "🙂", "🙃", "😉", "😌", "😍", "🥰", "😘",
+                    "😗", "😙", "😚", "😋", "😛", "😝", "😜", "🤪", "🤨", "🧐",
+                    "🤓", "😎", "🥸", "🤩", "🥳", "😏", "😒", "😞", "😔", "😟",
+                    "😕", "🙁"
+                ]
+                timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                labeled_line = f"{emojis[random_number]} ({username})    Date: {timestamp.split()[0]} | Time: {timestamp.split()[1]} \n    >> {entry.strip()}"
+
+                message_frame = ttk.Frame(frame, borderwidth=1, relief="solid")
+                label = ttk.Label(message_frame, text=labeled_line, wraplength=600, justify="left")
+                label.pack(anchor="w", padx=10, pady=5)
+                message_frame.pack(fill="x", padx=5, pady=5)
+
+                edit_button = tk.Button(message_frame, text="Edit", command=lambda num=i: edit_entry(num))
+                edit_button.pack(side="left", padx=5)
+
+                delete_button = tk.Button(message_frame, text="Delete", command=lambda num=i: delete_entry(num))
+                delete_button.pack(side="right", padx=5)
+
 
 
     def search_entries():
