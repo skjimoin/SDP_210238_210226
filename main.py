@@ -1,56 +1,78 @@
 import tkinter as tk
 from tkinter import messagebox, ttk, simpledialog
 from datetime import datetime
-import os
 import random
-
-def save_password(username, password):
-    with open(f"{username}pass.txt", "w") as pass_file:
-        pass_file.write(password)
 
 
 def checkinfo() :
-    print("to check username and pass")
+    
     username = username_entry.get()
    
     if not username:
         messagebox.showerror("Error", "Please enter a username")
         return
+    
 
-    if os.path.exists(f"{username}pass.txt"):
-        with open(f"{username}pass.txt", "r") as pass_file:
-            password = pass_file.read().strip()
-    else:
+
+    
+    file_path = "login_info.txt"
+    with open(file_path, "r") as file:
+            entries = file.readlines()
+    new_user = 1
+    for i, entry in enumerate(entries):
+            if entry.strip():
+                    userlogin = entry.split()[0]
+                    passlogin = entry.split()[1]
+
+
+                    if username == userlogin :
+                        new_user = 0
+                        password_entry = simpledialog.askstring("Password", f"Enter password for {username}:")
+
+                        if password_entry != passlogin:
+                            messagebox.showerror("Error", "Incorrect password")
+                            return
+                        else :
+                            nexwin()
+                        break
+
+    if(new_user) :
+
         password = simpledialog.askstring("Password", f"Set password for {username}:")
-
         if not password:
             messagebox.showerror("Error", "Password cannot be empty")
             return
+    
+        login_info_path = "login_info.txt"
+        with open(login_info_path, "a") as new_user_info:
+                new_user_info.write("\n")  
+                new_user_info.write(f"{username} {password}")
+                nexwin()
+        
+        
 
-        save_password(username, password)
+    
 
-    password_entry = simpledialog.askstring("Password", f"Enter password for {username}:")
-
-    if password_entry != password:
-        messagebox.showerror("Error", "Incorrect password")
-        return
-    else :
-        nexwin()
+    
+    
 
 def create_file():
     username = username_entry.get()
    
    
-    file_path = f"{username}.txt"
+    file_path = "journal.txt"
     write_window = tk.Toplevel(root)
     write_window.title(f"{username}'s Journal")
 
+    
+
     def save_content():
         content = text_area.get("1.0", tk.END)
-        mode = "w" if not os.path.exists(file_path) else "a"
-        with open(file_path, mode) as file:
-            if mode == "a":
-                file.write("\n")  
+        content = username + " "+ content
+        with open(file_path, "a") as file:
+            
+            file.write("\n")  
+                
             file.write(content)
         messagebox.showinfo("Success", f"{username}'s Journal updated.")
         write_window.destroy()
@@ -63,11 +85,11 @@ def create_file():
 
 def read_file():
     username = username_entry.get()
-    file_path = f"{username}.txt"
+    file_path = "journal.txt"
 
-    if not os.path.exists(file_path):
-        messagebox.showerror("Error", f"Journal for '{username}' hasn't been created")
-        return
+
+
+
 
     def edit_entry(entry_num):
         read_window.destroy()
@@ -75,7 +97,8 @@ def read_file():
             edited_content = entry_content.get("1.0", tk.END)
             with open(file_path, "r") as file:
                 lines = file.readlines()
-            lines[entry_num] = edited_content
+                print(lines[entry_num])
+            lines[entry_num] = username + " "+edited_content
             with open(file_path, "w") as file:
                 file.writelines(lines)
             messagebox.showinfo("Success", "Entry edited successfully")
@@ -86,15 +109,21 @@ def read_file():
         edit_window.title("Edit Entry")
 
         with open(file_path, "r") as file:
+            
             lines = file.readlines()
         original_content = lines[entry_num]
-
+        part = original_content.split(' ')
+        text = ' '.join(part[1:])
         entry_content = tk.Text(edit_window)
-        entry_content.insert(tk.END, original_content)
+        entry_content.insert(tk.END, text)
         entry_content.pack(fill="both", expand=True)
 
         save_button = tk.Button(edit_window, text="Save Changes", command=save_edit)
         save_button.pack()
+
+
+
+
 
     def delete_entry(entry_num):
         read_window.destroy()
@@ -120,6 +149,9 @@ def read_file():
 
     
 
+
+
+
     def filter_entries():
       
         selected_filter = filter_combobox.get()
@@ -143,18 +175,30 @@ def read_file():
         if reverse:
             entries.reverse()
 
+        usernamenotfound = 1
         for i, entry in enumerate(entries):
-            if entry.strip():
+            if entry.strip() and entry.strip().split()[0] == username :
+            
+                part = entry.split(' ')
+                text = ' '.join(part[1:])
+            
+                usernamenotfound = 0
+    
                 random_number = random.randint(1, 20)
                 emojis = [
-                    "😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣", "🥲", "🥹",
-                    "☺️", "😊", "😇", "🙂", "🙃", "😉", "😌", "😍", "🥰", "😘",
-                    "😗", "😙", "😚", "😋", "😛", "😝", "😜", "🤪", "🤨", "🧐",
-                    "🤓", "😎", "🥸", "🤩", "🥳", "😏", "😒", "😞", "😔", "😟",
-                    "😕", "🙁"
-                ]
+                            "😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣", "🥲", "🥹",
+                            "☺️", "😊", "😇", "🙂", "🙃", "😉", "😌", "😍", "🥰", "😘",
+                            "😗", "😙", "😚", "😋", "😛", "😝", "😜", "🤪", "🤨", "🧐",
+                            "🤓", "😎", "🥸", "🤩", "🥳", "😏", "😒", "😞", "😔", "😟",
+                            "😕", "🙁"
+                        ]
+
+
+                        
+
+
                 timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                labeled_line = f"{emojis[random_number]} ({username})    Date: {timestamp.split()[0]} | Time: {timestamp.split()[1]} \n    >> {entry.strip()}"
+                labeled_line = f"{emojis[random_number]} ({username})    Date: {timestamp.split()[0]} | Time: {timestamp.split()[1]} \n    >> {text.strip()}"
 
                 message_frame = ttk.Frame(frame, borderwidth=1, relief="solid")
                 label = ttk.Label(message_frame, text=labeled_line, wraplength=600, justify="left")
@@ -166,6 +210,16 @@ def read_file():
 
                 delete_button = tk.Button(message_frame, text="Delete", command=lambda num=i: delete_entry(num))
                 delete_button.pack(side="right", padx=5)
+                    
+    
+        if (usernamenotfound) :
+
+            messagebox.showerror("Error", f"Journal for '{username}' has no entry.")
+            return
+
+
+
+
 
 
 
@@ -181,19 +235,30 @@ def read_file():
 
         with open(file_path, "r") as file:
             entries = file.readlines()
-
+        usernamenotfound = 1
         for i, entry in enumerate(entries):
-            if entry.strip().lower().find(keyword) != -1:
+            if entry.strip() and entry.strip().split()[0] == username and entry.strip().lower().find(keyword) != -1:
+            
+                part = entry.split(' ')
+                text = ' '.join(part[1:])
+            
+                usernamenotfound = 0
+    
                 random_number = random.randint(1, 20)
                 emojis = [
-                    "😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣", "🥲", "🥹",
-                    "☺️", "😊", "😇", "🙂", "🙃", "😉", "😌", "😍", "🥰", "😘",
-                    "😗", "😙", "😚", "😋", "😛", "😝", "😜", "🤪", "🤨", "🧐",
-                    "🤓", "😎", "🥸", "🤩", "🥳", "😏", "😒", "😞", "😔", "😟",
-                    "😕", "🙁"
-                ]
+                            "😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣", "🥲", "🥹",
+                            "☺️", "😊", "😇", "🙂", "🙃", "😉", "😌", "😍", "🥰", "😘",
+                            "😗", "😙", "😚", "😋", "😛", "😝", "😜", "🤪", "🤨", "🧐",
+                            "🤓", "😎", "🥸", "🤩", "🥳", "😏", "😒", "😞", "😔", "😟",
+                            "😕", "🙁"
+                        ]
+
+
+                        
+
+
                 timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                labeled_line = f"{emojis[random_number]} ({username})    Date: {timestamp.split()[0]} | Time: {timestamp.split()[1]} \n    >> {entry.strip()}"
+                labeled_line = f"{emojis[random_number]} ({username})    Date: {timestamp.split()[0]} | Time: {timestamp.split()[1]} \n    >> {text.strip()}"
 
                 message_frame = ttk.Frame(frame, borderwidth=1, relief="solid")
                 label = ttk.Label(message_frame, text=labeled_line, wraplength=600, justify="left")
@@ -205,6 +270,15 @@ def read_file():
 
                 delete_button = tk.Button(message_frame, text="Delete", command=lambda num=i: delete_entry(num))
                 delete_button.pack(side="right", padx=5)
+                    
+    
+        if (usernamenotfound) :
+
+            messagebox.showerror("Error", f"Journal for '{username}' has no entry.")
+            return
+
+
+
 
     read_window = tk.Toplevel(root)
     read_window.title(f"{username}'s Journal")
@@ -242,19 +316,30 @@ def read_file():
 
     with open(file_path, "r") as file:
         entries = file.readlines()
-
+    usernamenotfound = 1
     for i, entry in enumerate(entries):
-        if entry.strip():
+        if entry.strip() and entry.strip().split()[0] == username:
+        
+            part = entry.split(' ')
+            text = ' '.join(part[1:])
+        
+            usernamenotfound = 0
+  
             random_number = random.randint(1, 20)
             emojis = [
-                "😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣", "🥲", "🥹",
-                "☺️", "😊", "😇", "🙂", "🙃", "😉", "😌", "😍", "🥰", "😘",
-                "😗", "😙", "😚", "😋", "😛", "😝", "😜", "🤪", "🤨", "🧐",
-                "🤓", "😎", "🥸", "🤩", "🥳", "😏", "😒", "😞", "😔", "😟",
-                "😕", "🙁"
-            ]
+                        "😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣", "🥲", "🥹",
+                        "☺️", "😊", "😇", "🙂", "🙃", "😉", "😌", "😍", "🥰", "😘",
+                        "😗", "😙", "😚", "😋", "😛", "😝", "😜", "🤪", "🤨", "🧐",
+                        "🤓", "😎", "🥸", "🤩", "🥳", "😏", "😒", "😞", "😔", "😟",
+                        "😕", "🙁"
+                    ]
+
+
+                    
+
+
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            labeled_line = f"{emojis[random_number]} ({username})    Date: {timestamp.split()[0]} | Time: {timestamp.split()[1]} \n    >> {entry.strip()}"
+            labeled_line = f"{emojis[random_number]} ({username})    Date: {timestamp.split()[0]} | Time: {timestamp.split()[1]} \n    >> {text.strip()}"
 
             message_frame = ttk.Frame(frame, borderwidth=1, relief="solid")
             label = ttk.Label(message_frame, text=labeled_line, wraplength=600, justify="left")
@@ -266,8 +351,11 @@ def read_file():
 
             delete_button = tk.Button(message_frame, text="Delete", command=lambda num=i: delete_entry(num))
             delete_button.pack(side="right", padx=5)
+                    
     
-
+    if (usernamenotfound) :
+        messagebox.showerror("Error", f"Journal for '{username}' has no entry.")
+        return
 
 root = tk.Tk()
 root.title("Journalify")
