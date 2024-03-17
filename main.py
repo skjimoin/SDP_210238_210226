@@ -11,10 +11,7 @@ def checkinfo() :
     if not username:
         messagebox.showerror("Error", "Please enter a username")
         return
-    
-
-
-    
+ 
     file_path = "login_info.txt"
     with open(file_path, "r") as file:
             entries = file.readlines()
@@ -86,9 +83,6 @@ def create_file():
 def read_file():
     username = username_entry.get()
     file_path = "journal.txt"
-
-
-
 
 
     def edit_entry(entry_num):
