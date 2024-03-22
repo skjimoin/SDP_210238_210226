@@ -42,6 +42,19 @@ class View:
 
         def filter_entries(): 
 
+
+            def currect_order_func(i,reverse) :
+                if reverse :        
+                    file_path = 'journal.txt'
+
+                    with open(file_path, 'r') as file:
+                        line_count = sum(1 for line in file)
+                        line_count -= 1
+
+                    return line_count - i
+                else :
+                    return i 
+
             selected_filter = filter_combobox.get()
             if selected_filter == "Ascending Order":
                 reverse = False
@@ -61,10 +74,7 @@ class View:
             usernamenotfound = 1
             for i, entry in enumerate(entries):
                 if entry.strip() and entry.strip().split()[0] == username :
-                    def disc_ordernum() :
-                        
-                        return 0
-
+                    
                     part = entry.split(' ')
                     text = ' '.join(part[1:])
                     usernamenotfound = 0
@@ -84,11 +94,11 @@ class View:
                     label = ttk.Label(message_frame, text=labeled_line, wraplength=600, justify="left")
                     label.pack(anchor="w", padx=10, pady=5)
                     message_frame.pack(fill="x", padx=5, pady=5)
-
-                    edit_button = tk.Button(message_frame, text="Edit", command=lambda num=i if selected_filter == "Ascending Order" else disc_ordernum(): self.show_edit_window(num,read_window))
+                    currect_order_num = currect_order_func(i,reverse)
+                    edit_button = tk.Button(message_frame, text="Edit", command=lambda num=currect_order_num: self.show_edit_window(num,read_window))
                     edit_button.pack(side="left", padx=5)
 
-                    delete_button = tk.Button(message_frame, text="Delete", command=lambda num=i if selected_filter == "Ascending Order" else disc_ordernum(): delete_entry(num))
+                    delete_button = tk.Button(message_frame, text="Delete", command=lambda num=currect_order_num : delete_entry(num))
                     delete_button.pack(side="right", padx=5)
                                 
             if (usernamenotfound) :
