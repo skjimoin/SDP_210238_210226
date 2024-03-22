@@ -44,14 +44,8 @@ class View:
 
 
             def currect_order_func(i,reverse) :
-                if reverse :        
-                    file_path = 'journal.txt'
-
-                    with open(file_path, 'r') as file:
-                        line_count = sum(1 for line in file)
-                        line_count -= 1
-
-                    return line_count - i
+                if reverse :            
+                    return  self.controller.model.count_line() - i
                 else :
                     return i 
 

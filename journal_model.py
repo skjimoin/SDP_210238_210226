@@ -39,3 +39,9 @@ class Model:
         del lines[entry_num]
         with open(self.file_path, "w") as file:
             file.writelines(lines)
+
+    def count_line(self) :
+        with open(self.file_path, 'r') as file:
+            line_count = sum(1 for line in file)
+        line_count -= 1
+        return line_count
