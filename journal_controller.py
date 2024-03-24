@@ -26,7 +26,7 @@ class Jcontroller :
             else:
                 self.view.show_info_message("Error", "Entry not found")
 
-    def save_edit(self, entry_num, edited_content,master_window):
+    def save_edit(self, entry_num, edited_content, master_window):
         edited_content = self.username + " "+edited_content
         success = self.model.edit_entry(entry_num, edited_content)
         if success:
@@ -36,7 +36,7 @@ class Jcontroller :
         else:
             self.view.show_info_message("Error", "Failed to edit entry")
     
-    def delete_entry(self,entry_num):
+    def delete_entry(self, entry_num):
         self.model.delete_entry(entry_num)  
 
         

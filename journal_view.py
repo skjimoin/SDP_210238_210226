@@ -5,8 +5,6 @@ import random
 class View:
     def __init__(self, master):
 
-
-        #new window
         self.master = master
         self.master.title("Journalify")
         self.master.geometry("1200x700")
@@ -89,7 +87,7 @@ class View:
                     label.pack(anchor="w", padx=10, pady=5)
                     message_frame.pack(fill="x", padx=5, pady=5)
                     currect_order_num = currect_order_func(i,reverse)
-                    edit_button = tk.Button(message_frame, text="Edit", command=lambda num=currect_order_num: self.show_edit_window(num,read_window))
+                    edit_button = tk.Button(message_frame, text="Edit", command=lambda num=currect_order_num: self.show_edit_window(num, read_window))
                     edit_button.pack(side="left", padx=5)
 
                     delete_button = tk.Button(message_frame, text="Delete", command=lambda num=currect_order_num : delete_entry(num))
@@ -134,7 +132,7 @@ class View:
                     label.pack(anchor="w", padx=10, pady=5)
                     message_frame.pack(fill="x", padx=5, pady=5)
 
-                    edit_button = tk.Button(message_frame, text="Edit", command=lambda num=i: self.show_edit_window(num,read_window))
+                    edit_button = tk.Button(message_frame, text="Edit", command=lambda num=i: self.show_edit_window(num, read_window))
                     edit_button.pack(side="left", padx=5)
 
                     delete_button = tk.Button(message_frame, text="Delete", command=lambda num=i: delete_entry(num))
@@ -144,7 +142,7 @@ class View:
 
                 messagebox.showerror("Error", f"Journal for '{username}' has no entry.")
                 return
-        #read window
+        
         read_window = tk.Toplevel(self.master)
         read_window.title(f"{username}'s Journal")
 
@@ -164,7 +162,7 @@ class View:
 
         filter_combobox = ttk.Combobox(search_frame, values=filter_options, state="Date Ascending")
         filter_combobox.pack(side="left", padx=5)
-        filter_button = tk.Button(search_frame, text="Filter",command=filter_entries)
+        filter_button = tk.Button(search_frame, text="Filter", command=filter_entries)
         filter_button.pack(side="left", padx=5)
 
         canvas = tk.Canvas(read_window)
@@ -201,7 +199,7 @@ class View:
                 label.pack(anchor="w", padx=10, pady=5)
                 message_frame.pack(fill="x", padx=5, pady=5)
 
-                edit_button = tk.Button(message_frame, text="Edit",command=lambda num=i: self.show_edit_window(num,read_window))
+                edit_button = tk.Button(message_frame, text="Edit",command=lambda num=i: self.show_edit_window(num, read_window))
                 edit_button.pack(side="left", padx=5)
 
                 delete_button = tk.Button(message_frame, text="Delete", command=lambda num=i: delete_entry(num))
@@ -229,7 +227,7 @@ class View:
             confirm_button = tk.Button(delete_window, text="Yes", command=confirm_delete)
             confirm_button.pack()
                 
-    def show_edit_window(self, entry_num,master_window):
+    def show_edit_window(self, entry_num, master_window):
         master_window.destroy()
         edit_window = tk.Toplevel(self.master)
         edit_window.title("Edit Entry")
@@ -242,7 +240,7 @@ class View:
         entry_content.insert(tk.END, text)
         entry_content.pack(fill="both", expand=True)
 
-        save_button = tk.Button(edit_window, text="Save Changes", command=lambda: self.controller.save_edit(entry_num, entry_content.get("1.0", tk.END),edit_window))
+        save_button = tk.Button(edit_window, text="Save Changes", command=lambda: self.controller.save_edit(entry_num, entry_content.get("1.0", tk.END), edit_window))
         save_button.pack()
 
     def show_info_message(self, title, message):

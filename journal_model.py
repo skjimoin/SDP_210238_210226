@@ -26,14 +26,14 @@ class Model:
         else:
             return False
         
-    def write_entry(self,content) :
+    def write_entry(self, content) :
         with open(self.file_path, "a") as file:
                 
             file.write("\n")  
                     
             file.write(content)
 
-    def delete_entry(self,entry_num):
+    def delete_entry(self, entry_num):
         with open(self.file_path, "r") as file:
             lines = file.readlines()
         del lines[entry_num]
