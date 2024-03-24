@@ -27,6 +27,9 @@ class Controller:
                         if username == userlogin :
                             new_user = 0
                             password_entry = simpledialog.askstring("Password", f"Enter password for {username}:")
+                            if not password_entry:
+                                messagebox.showerror("Error", "Please enter a Password")
+                                return 
 
                             if password_entry != passlogin:
                                 messagebox.showerror("Error", "Incorrect password")
