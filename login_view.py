@@ -1,10 +1,8 @@
 import tkinter as tk
-from tkinter import filedialog
-
 class View:
     def __init__(self, master):
         self.master = master
-        self.master.title("Text File Input")       
+        self.master.title("Journalify Log in")       
         self.master.geometry("1200x700")
         self.master.configure(bg="sky blue")
         self.frame1 = tk.Frame(bg='sky blue')
@@ -23,3 +21,5 @@ class View:
     def checkinfoforcontroller(self):
         username = self.username_entry.get()
         self.controller.checkinfo(username)
+
+    

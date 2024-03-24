@@ -144,7 +144,7 @@ class View:
 
                 messagebox.showerror("Error", f"Journal for '{username}' has no entry.")
                 return
-
+        #read window
         read_window = tk.Toplevel(self.master)
         read_window.title(f"{username}'s Journal")
 
