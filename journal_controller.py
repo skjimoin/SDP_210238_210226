@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from journal_model import Model
 from journal_view import View
-class Jcontroller :
+class Journal_controller :
     def __init__(self, root,username):
         self.username = username
         self.model = Model()

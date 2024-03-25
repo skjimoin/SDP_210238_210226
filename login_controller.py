@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox, simpledialog
 from login_model import Model
 from login_view import View
-from journal_controller import Jcontroller
+from journal_controller import Journal_controller
 
 class Login_Controller:
     def __init__(self, root):
@@ -36,7 +36,7 @@ class Login_Controller:
                                 return
                             else :
                                 new_window = tk.Toplevel(self.root)
-                                newwindow = Jcontroller(new_window,username)
+                                newwindow = Journal_controller(new_window,username)
                             break
 
         if(new_user) :
@@ -47,7 +47,7 @@ class Login_Controller:
                 return
             self.model.new_user(username,password)
             new_window = tk.Toplevel(self.root)
-            newwindow = Jcontroller(new_window,username)
+            newwindow = Journal_controller(new_window,username)
 
 def main():
     root = tk.Tk()

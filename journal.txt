@@ -1,2 +1,3 @@
 admin Below text file will save journal
 
+user2 this is user 2
