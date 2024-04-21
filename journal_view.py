@@ -12,14 +12,10 @@ class View:
         self.bg_color = "#E6E6FA"
         self.master.configure(bg=self.bg_color)   
         self.frame2 = tk.Frame(self.master, bg=self.bg_color)
-
-        # Load and resize the first image
         diary_image = tk.PhotoImage(file="diary.png")
-        resized_diary_image = diary_image.subsample(2, 2)  # Resize to 500x500
-
-        # Load and resize the second image
+        resized_diary_image = diary_image.subsample(2, 2)  
         diary_image1 = tk.PhotoImage(file="diary1.png")
-        resized_diary_image1 = diary_image1.subsample(2, 2)  # Resize to 500x500
+        resized_diary_image1 = diary_image1.subsample(2, 2)  
 
         self.create_button = tk.Button(self.frame2, text="Write your thoughts...", bg=self.bg_color, fg='purple', font=("Arial", 15), command=self.save_content_in_controller, image=resized_diary_image, compound=tk.LEFT)
         self.create_button.image = resized_diary_image
@@ -191,7 +187,6 @@ class View:
         canvas.create_window((0, 0), window=frame, anchor="nw")
         frame.bind("<Configure>", lambda event, canvas=canvas: canvas.configure(scrollregion=canvas.bbox("all")))
 
-        # Add picture "women.png" to the left side of the user entries window
         women_image = tk.PhotoImage(file="women.png")
         women_label = tk.Label(frame, image=women_image, bg="#E6E6FA")
         women_label.image = women_image
@@ -267,7 +262,7 @@ class View:
         save_button.pack()
 
     def show_info_message(self, title, message):
-        messagebox.showinfo(title, message, icon="info", bg='#9370DB', fg='white')
+        messagebox.showinfo(title, message)
 
 class Controller:
     def __init__(self, model, view):
