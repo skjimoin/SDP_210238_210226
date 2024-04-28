@@ -1,4 +1,4 @@
-from journal_model import Model
+from Model.journal_model import Model
 import os
 
 def test_count_line():

@@ -1,8 +1,9 @@
 import tkinter as tk
 from tkinter import messagebox, simpledialog
-from login_model import Model
-from login_view import View
-from journal_controller import Journal_controller
+from Model.login_model import Model
+#import Model
+from View.login_view import View
+from Controller.journal_controller import Journal_controller
 
 class Login_Controller:
     def __init__(self, root):
@@ -50,10 +51,3 @@ class Login_Controller:
         except Exception as e:
             messagebox.showerror("Error", f"An error occurred: {str(e)}")
 
-def main():
-    root = tk.Tk()
-    App = Login_Controller(root)
-    root.mainloop()
-
-if __name__ == "__main__":
-    main()

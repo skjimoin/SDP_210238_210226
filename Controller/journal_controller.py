@@ -1,7 +1,8 @@
 import tkinter as tk
 from tkinter import messagebox
-from journal_model import Model
-from journal_view import View
+#import Model.journal_model
+from Model.journal_model import Model
+from View.journal_view import View
 class Journal_controller :
     def __init__(self, root,username):
         self.username = username

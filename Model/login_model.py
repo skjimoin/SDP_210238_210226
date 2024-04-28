@@ -1,3 +1,4 @@
+
 class Model:
     def __init__(self):
         self.file_path = "login_info.txt"

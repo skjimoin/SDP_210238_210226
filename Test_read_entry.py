@@ -1,5 +1,5 @@
 import pytest
-from journal_model import Model
+from Model.journal_model import Model
 
 @pytest.fixture
 def model():
