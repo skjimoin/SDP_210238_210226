@@ -13,7 +13,7 @@ class View:
         self.title_label = tk.Label(self.master, text="'Where every thought finds its place'", bg="#E6E6FA", fg="blue", font=("Verdana", 10, "bold"))
         self.title_label.pack(pady=(0, 20)) 
 
-        self.journal_image = tk.PhotoImage(file="journaling.png")     
+        self.journal_image = tk.PhotoImage(file="Images/journaling.png")     
         self.journal_image = self.journal_image.subsample(2)    
         self.image_label = tk.Label(self.master, image=self.journal_image, bg="#E6E6FA")
         self.image_label.pack(pady=20)

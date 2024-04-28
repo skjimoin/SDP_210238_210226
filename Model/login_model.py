@@ -1,7 +1,7 @@
 
 class Model:
     def __init__(self):
-        self.file_path = "login_info.txt"
+        self.file_path = "Data/login_info.txt"
 
     def read_entries(self)  :
         with open(self.file_path, "r") as file:

@@ -1,7 +1,7 @@
 from tkinter import messagebox
 class Model:
     def __init__(self):
-        self.file_path = "journal.txt"
+        self.file_path = "Data/journal.txt"
 
     def read_entries(self)  :
         with open(self.file_path, "r") as file:

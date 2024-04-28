@@ -12,9 +12,9 @@ class View:
         self.bg_color = "#E6E6FA"
         self.master.configure(bg=self.bg_color)   
         self.frame2 = tk.Frame(self.master, bg=self.bg_color)
-        diary_image = tk.PhotoImage(file="diary.png")
+        diary_image = tk.PhotoImage(file="Images/diary.png")
         resized_diary_image = diary_image.subsample(2, 2)  
-        diary_image1 = tk.PhotoImage(file="diary1.png")
+        diary_image1 = tk.PhotoImage(file="Images/diary1.png")
         resized_diary_image1 = diary_image1.subsample(2, 2)  
 
         self.create_button = tk.Button(self.frame2, text="Write your thoughts...", bg=self.bg_color, fg='purple', font=("Arial", 15), command=self.save_content_in_controller, image=resized_diary_image, compound=tk.LEFT)
@@ -187,7 +187,7 @@ class View:
         canvas.create_window((0, 0), window=frame, anchor="nw")
         frame.bind("<Configure>", lambda event, canvas=canvas: canvas.configure(scrollregion=canvas.bbox("all")))
 
-        women_image = tk.PhotoImage(file="women.png")
+        women_image = tk.PhotoImage(file="Images/women.png")
         women_label = tk.Label(frame, image=women_image, bg="#E6E6FA")
         women_label.image = women_image
         women_label.pack(side="left", padx=10, pady=5)
