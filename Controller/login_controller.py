@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox, simpledialog
 from Model.login_model import Model
-#import Model
 from View.login_view import View
 from Controller.journal_controller import Journal_controller
 
