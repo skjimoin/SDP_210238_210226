@@ -54,7 +54,14 @@ class View:
                     "🖌️", "📜", "🖇️", "📐", "🖇️"
                  ]
         random_number = random.randint(1, 15)
-        women_image = tk.PhotoImage(file="Images/women.png")
+        select_image = self.controller.count_reactions(username)
+        if (select_image == "happy") :
+            women_image = tk.PhotoImage(file="Images/happy.png")
+        elif (select_image == "sad") :
+            women_image = tk.PhotoImage(file="Images/sad.png")
+        else :
+            women_image = tk.PhotoImage(file="Images/neutral.png")
+
         def filter_entries(): 
             def currect_order_func(i, reverse) :
                 if reverse :            

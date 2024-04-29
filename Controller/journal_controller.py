@@ -40,6 +40,45 @@ class Journal_controller :
     def delete_entry(self, entry_num):
         self.model.delete_entry(entry_num)  
 
+    def count_reactions(self,username):
+        happy_reactions = ["Happy", "happy", "HAPPY", "😁"]
+        sad_reactions = ["Sad", "sad", "SAD", "🙁"]
+        mixed_sad_reactions = [" not Happy", "not happy", "not HAPPY"]
+        mixed_happy_reactions = ["not Sad", "not sad", "not SAD"]
+        
+        happy_count = 0
+        sad_count = 0
+
+        entries = self.model.read_entries()
+        for i, entry in enumerate(entries):
+                if entry.strip() and entry.strip().split()[0] == username:
+                
+                    part = entry.split(' ')
+                    paragraph = ' '.join(part[1:])
+        
+                    for reaction in happy_reactions:
+                        happy_count += paragraph.count(reaction)
+                    for reaction in sad_reactions:
+                        sad_count += paragraph.count(reaction)
+
+
+                    for reaction in mixed_sad_reactions:
+                        if reaction in paragraph:
+                            
+                            sad_count += paragraph.count(reaction)
+                            happy_count -= paragraph.count(reaction)
+                    for reaction in mixed_happy_reactions:
+                        if reaction in paragraph:
+                            happy_count += paragraph.count(reaction)
+                            sad_count -= paragraph.count(reaction)
+        if happy_count > sad_count:
+            return "happy"
+        elif sad_count > happy_count:
+            return "sad"
+        else:
+            return "neutral"
+
+
         
 
 
