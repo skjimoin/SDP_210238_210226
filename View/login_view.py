@@ -31,10 +31,3 @@ class View:
         username = self.username_entry.get()
         self.controller.checkinfo(username)
 
-def main():
-    root = tk.Tk()
-    app = View(root)
-    root.mainloop()
-
-if __name__ == "__main__":
-    main()
